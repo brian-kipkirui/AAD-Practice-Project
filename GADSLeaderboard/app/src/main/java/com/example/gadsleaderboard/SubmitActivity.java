@@ -10,6 +10,11 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -18,16 +23,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SubmitActivity extends AppCompatActivity {
 
+    //SignUpResponse signUpResponsesData;
     private EditText nameText;
     private EditText lastText;
     private EditText emailText;
     private EditText linkText;
     private Button submitButton;
+    APIservice submissionAPI;
     String name;
     String lastName;
     String email;
     String link;
-    private APIservice submitAPI;
+    //private APIservice submitAPI;
+    private static final String TAG = "SubmitActivity";
 
 
 
@@ -46,50 +54,79 @@ public class SubmitActivity extends AppCompatActivity {
 
 
 
-
+        /*Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+*/
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://docs.google.com/forms/d/e/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        APIservice submitAPI = retrofit.create(APIservice.class);
+        submissionAPI = retrofit.create(APIservice.class);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                name = nameText.getText().toString();
-                lastName = lastText.getText().toString();
-                email = emailText.getText().toString();
-                link = linkText.getText().toString();
 
-                SubmitData();
+                Log.i(TAG, "Button Clicked");
+                createSubmission();
 
             }
         });
 
     }
 
-    public void SubmitData(){
+    public void createSubmission(){
 
-        Submission submission = new Submission(email,name,lastName,link);
+        name = nameText.getText().toString().trim();
+        lastName = lastText.getText().toString().trim();
+        email = emailText.getText().toString().trim();
+        link = linkText.getText().toString().trim();
 
-        Call<Submission> call = submitAPI.createSubmission(email, name, lastName,link);
+        Log.i(TAG, "Submit data method called");
+       Submission submission = new Submission(email, name, lastName, link);
+        Call<Submission> call = submissionAPI.createSubmission(submission);
+
+
+
+        //Call<Submission> call = submissionAPI.createSubmission(email, name, lastName,link);
 
         call.enqueue(new Callback<Submission>() {
-
-
             @Override
             public void onResponse(Call<Submission> call, Response<Submission> response) {
 
-                if(response.isSuccessful()) {
+                Log.i(TAG, "Submission made");
 
-                    Toast.makeText(SubmitActivity.this, "Submission Successful!", Toast.LENGTH_SHORT).show();
+                if(!response.isSuccessful()) {
+                    Log.i(TAG, "Submission unSuccessful!"+ response.code());
+
+                    try {
+                        Log.i("Error code 400",response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                 /*   if (response.code() == 400) {
+                        try {
+                            Log.i("Error code 400",response.errorBody().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+*/
+
                 }
+                Log.i(TAG, "Submission Successful!"+ response.code());
+
+                Toast.makeText(SubmitActivity.this, "Submission Successful!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Call<Submission> call, Throwable t) {
+
+                Log.i(TAG, "Submission  NOT Successful! " + t.getMessage());
                 Toast.makeText(SubmitActivity.this, "Submission not Succesful...Please try later!", Toast.LENGTH_SHORT).show();
 
             }

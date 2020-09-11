@@ -5,6 +5,21 @@ import com.google.gson.annotations.SerializedName;
 
 
 public class Submission {
+
+
+   @SerializedName("entry.1824927963")
+    private String email;
+
+   @SerializedName("entry.1877115667")
+    private String name;
+
+   @SerializedName("entry.2006916086")
+    private String lastName;
+
+   @SerializedName("entry.284483984")
+    private String link;
+
+
     public Submission(String email, String name, String lastName, String link) {
         this.email = email;
         this.name = name;
@@ -12,10 +27,7 @@ public class Submission {
         this.link = link;
     }
 
-    private String email;
-    private String name;
-    private String lastName;
-    private String link;
+
 
     public String getEmail() {
         return email;
