@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="102dp"
+        android:layout_height="66dp"
+        android:layout_weight="1"
+        android:paddingRight="10dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/skilliq">
+
+    </ImageView>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/font"
+        android:layout_width="304dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv2_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Brian Kipkirui"
+            android:textSize="30sp">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv2_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="130 skill IQ Score, Kenya"
+            android:textSize="20sp">
+
+        </TextView>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</LinearLayout>
